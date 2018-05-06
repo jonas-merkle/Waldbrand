@@ -8,7 +8,17 @@
 #define FIRE 'F'
 #define BURNED '_'
 
-using namespace std;
+/*
+ * Text-snippets for the user interface
+ */
+ //@TODO: UI-Texte
+ char germanUIText[3][256] {
+    "\nHallo und herzlich Willkommen beim Waldbrand Simulator!\n\n",
+    "Bevor es los geht gib bitte die von dir gewünschte Dichte des Waldes ein (Zahl zwischen 0 und 1): ",
+    "Dein Wald wurde erfolgreich generiert und sieht wie folgt aus:\n"
+};
+
+char englishUIText[3][256];
 
 /*
  * New datatype to store the data of a forest.
@@ -36,10 +46,10 @@ void printForest(forest_t *forest) {
 /*
  * Function which generates a random forest.
  */
-void generateForest(forest_t *forest, float dencity) {
+void generateForest(forest_t *forest, float density) {
     for (int y = 0; y < FOREST_HIGHT; y++) {
         for (int x = 0; x < FOREST_WIDTH; x ++) {
-            if (((dencity * 10) - 1) < (rand() % 10)) {
+            if (((density * 10) - 1) < (rand() % 10)) {
                 forest->area[y][x] = EMPTY;
             }
             else {
@@ -71,7 +81,25 @@ void setFireRow(forest_t *forest) {
  * Function to simulate a step of the forest fires.
  */
 void makeItBurn(forest_t *forest) {
+    //@TODO: Brandsimulation
+}
 
+/*
+ * Function to print out the user interface text-snippets in the selected language.
+ */
+void printUI(char language, int textNumber) {
+
+    // switch to the selected language
+    switch (language) {
+        default:
+        case 'D':
+            printf("%s", germanUIText[textNumber]);
+        break;
+
+        case 'E':
+            printf("%s", englishUIText[textNumber]);
+        break;
+    }
 }
 
 /*
@@ -83,9 +111,20 @@ int main() {
     srand(time(NULL));
 
 
+    //@TODO: Game-Routine (evtl. mit zusätzlichem exception handling)
+    printUI('D', 0);
+    printUI('D', 1);
+
     forest_t wald;
-    generateForest(&wald, 0.9);
+    float density;
+    scanf("%f", &density);
+    generateForest(&wald, density);
+    printUI('D', 2);
     printForest(&wald);
+
+
+
+
     setFirePoint(&wald);
     printForest(&wald);
 
